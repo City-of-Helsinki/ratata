@@ -4,19 +4,23 @@ import requests
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 HOST = '127.0.0.1'
-PORT = 10232
+PORT = 10231
 
 
 class HTTPTestServer(BaseHTTPRequestHandler):
 
     def do_GET(self):
-        print("TestServer >> request to %s" % self.path)
+        print("HTTPTestServer >> received request to %s" % self.path)
         path = self.path
         if path.endswith('/'):
-            path = path[0:-2]
+            path = path[0:-1]
         method_name = "GET{0}".format(path.replace('/', '_'))
-        content = getattr(self, method_name)()
-        self.wfile.write(bytes(content, "utf8"))
+        try:
+            method = getattr(self, method_name)
+            content = method()
+            self.wfile.write(bytes(content, "utf8"))
+        except AttributeError:
+            self.GET_not_found()
 
     def GET_test(self):
         self.send_response(200)
@@ -24,23 +28,30 @@ class HTTPTestServer(BaseHTTPRequestHandler):
         self.end_headers()
         return 'all ok'
 
+    def GET_not_found(self):
+        self.send_response(404)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
+        self.wfile.write(bytes("not found", "utf8"))
 
-class TestServerThread(threading.Thread):
+
+
+class ServerThread(threading.Thread):
 
     def __init__(self, server_klass, *args, **kwargs):
-        super(TestServerThread, self).__init__(*args, **kwargs)
+        super(ServerThread, self).__init__(*args, **kwargs)
         self.server_klass = server_klass
         self.httpd = None
 
     def run(self):
-        print("run being called")
         server_address = (HOST, PORT)
+        print("start server on %s %s" % server_address)
         self.httpd = HTTPServer(server_address, self.server_klass)
         self.httpd.serve_forever()
 
 
 def run(klass=HTTPTestServer):
-    threaded_server = TestServerThread(klass)
+    threaded_server = ServerThread(klass)
     threaded_server.start()
     return threaded_server
 

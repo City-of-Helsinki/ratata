@@ -1,5 +1,5 @@
 name: Parks API (testing)
-address: http://127.0.0.1:4567
+address: http://127.0.0.1:10231
 
 requests:
   - name: Your basic index page
@@ -13,9 +13,11 @@ requests:
     path: /parks/1
     response:
       type: JSON
-      contains: r/description/
+      contains: description
+      regex: .*description.*
+      function: validate_random_park
 
   - name: A more complicated check with parameter via function call
-    path: /parks/{% random_park_id %}
+    path: /parks/{% random_park_nonexistant_id %}
     response:
-      function: validate_random_park
+      code: 404

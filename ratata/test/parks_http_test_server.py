@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 import json
 import requests
-from ratata.test.http_test_server import HTTPTestServer, run, quit
+from .http_test_server import HTTPTestServer, run, quit
 
 HOST = '127.0.0.1'
-PORT = 10232
+PORT = 10231
 
 
 def respond_json(func):
     def rapper(obj):
         print("return json for", func)
-        obj.send_header('Content-type', 'text/json')
+        obj.send_header('Content-type', 'application/json')
         obj.end_headers()
-        return func(obj)
+        return json.dumps(func(obj))
     return rapper
 
 
@@ -26,23 +26,22 @@ def respond_with(status):
     return decorator
 
 
-
 class ParksHTTPTestServer(HTTPTestServer):
 
     @respond_with(200)
     @respond_json
     def GET_parks(self):
-        return json.dumps({'parks': [1, 2, 3]})
+        return {'parks': [1, 2, 3]}
 
     @respond_with(200)
     @respond_json
     def GET_parks_1(self):
-        return json.dumps({'parks': [1, 2, 3]})
+        return {'id': 1, 'name': 'Porkie Park', 'description': 'Very fancy'}
 
     @respond_with(404)
     @respond_json
     def GET_parks_100(self):
-        return json.dumps({'status': 'park %s not found' % '100'})
+        return {'status': 'park %s not found' % '100'}
 
 
 

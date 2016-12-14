@@ -1,6 +1,8 @@
 import sys
-import ratata
+
+from ratata import main
 
 if __name__ == '__main__':
     fn = sys.argv[1]
-    ratata.main(fn)
+    main(fn)
+
