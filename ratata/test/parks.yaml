@@ -1,0 +1,21 @@
+name: Parks API (testing)
+address: http://127.0.0.1:4567
+
+requests:
+  - name: Your basic index page
+    path: "/parks/"
+    method: GET  # redundant, assumed
+    response:
+      type: JSON
+      code: 200
+
+  - name: Get information about one specific park
+    path: /parks/1
+    response:
+      type: JSON
+      contains: r/description/
+
+  - name: A more complicated check with parameter via function call
+    path: /parks/{% random_park_id %}
+    response:
+      function: validate_random_park
