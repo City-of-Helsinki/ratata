@@ -35,7 +35,6 @@ class HTTPTestServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("not found", "utf8"))
 
 
-
 class ServerThread(threading.Thread):
 
     def __init__(self, server_klass, *args, **kwargs):
@@ -56,7 +55,7 @@ def run(klass=HTTPTestServer):
     return threaded_server
 
 
-def quit(server_thread):
+def stop(server_thread):
     server_thread.httpd.shutdown()
     server_thread.join()
     print('server thread was shut down')
@@ -68,4 +67,4 @@ if __name__ == '__main__':
     ret = requests.get("http://{0}:{1}/test".format(HOST, PORT))
     assert ret.status_code == 200
     print(ret.text)
-    quit(t)
+    stop(t)

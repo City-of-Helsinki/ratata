@@ -17,7 +17,16 @@ requests:
       regex: .*description.*
       function: validate_random_park
 
-  - name: A more complicated check with parameter via function call
+  - name: Checking for 404
     path: /parks/{% random_park_nonexistant_id %}
     response:
       code: 404
+
+  - name: The search endpoint uses a GET-parameter
+    path: /parks/search
+    method: GET
+    params:
+      t: porky
+    response:
+      type: JSON
+      contains: Porkie Park

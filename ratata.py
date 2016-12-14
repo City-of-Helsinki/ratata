@@ -1,8 +1,8 @@
 import sys
 
-from ratata import main
+from ratata import run_spec
 
 if __name__ == '__main__':
     fn = sys.argv[1]
-    main(fn)
+    run_spec(fn)
 

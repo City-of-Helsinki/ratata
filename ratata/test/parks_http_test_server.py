@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json
 import requests
-from .http_test_server import HTTPTestServer, run, quit
+from .http_test_server import HTTPTestServer, run, stop
 
 HOST = '127.0.0.1'
 PORT = 10231
@@ -38,6 +38,11 @@ class ParksHTTPTestServer(HTTPTestServer):
     def GET_parks_1(self):
         return {'id': 1, 'name': 'Porkie Park', 'description': 'Very fancy'}
 
+    @respond_with(200)
+    @respond_json
+    def GET_parks_search(self):
+        return {'id': 1, 'name': 'Porkie Park', 'description': 'Very fancy'}
+
     @respond_with(404)
     @respond_json
     def GET_parks_100(self):
@@ -52,4 +57,4 @@ if __name__ == '__main__':
     ret = requests.get("http://{0}:{1}/parks/1".format(HOST, PORT))
     assert ret.status_code == 200
     print(ret.text)
-    quit(t)
+    stop(t)

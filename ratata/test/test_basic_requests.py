@@ -3,7 +3,7 @@ import sys
 import pytest
 
 import ratata
-from .http_test_server import run as start_testing_server, quit as stop_testing_server
+from .http_test_server import run as start_testing_server, stop as stop_testing_server
 from .parks_http_test_server import ParksHTTPTestServer
 
 
@@ -16,4 +16,4 @@ def parks_server():
 
 
 def test_basic_requests(parks_server):
-    ratata.main('ratata/test/parks.yaml')
+    ratata.run_spec('ratata/test/parks.yaml')
