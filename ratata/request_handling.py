@@ -7,10 +7,10 @@ import requests
 
 def send_request(url, request):
     if request.get('method') and request['method'].lower() == 'post':
-        print("  ==> post request", url)
+        print("  POST:", url)
         ret = requests.post(url, data=request.get('params', {}))
     else:
-        print("  ==> get request", url)
+        print("  GET:", url)
         ret = requests.get(url)
     return ret
 
