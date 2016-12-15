@@ -1,19 +1,96 @@
 Ratata
 ======
 
-Ratata is an API tester built with Python.
+Ratata is a HTTP API tester built with Python 3.
 
 Features
 --------
-- runs test scenarios from a YAML-file
-- parameters for tests can be generated randomly or through functions
-- validation of return values can be done based on regexp or validation
-  functions
-- can benchmark a service by repeatedly running a certain test
+Ratata parses an API-test specification from a YAML-file and runs the tests against a live server.
+
+Given the example:
+```YAML
+name: Parks API (testing)
+address: http://127.0.0.1:10231
+
+requests:
+  - name: Your basic index page
+    path: "/parks/"
+    method: GET  # redundant, assumed
+    response:
+      type: JSON
+      code: 200
+```
+
+Running this would test that `http://127.0.0.1:10231/parks` accepts a GET request and responds with a 
+`Content-type: application/json` header and code `200`.
+
+Dynamic paths <a name="dynamic-paths"></a>
+-------------
+A Python function returning a string can be used to create dynamic paths. For example:
+ 
+```YAML
+[...]
+# inside park.yaml
+requests:
+  - name: Checking for 404
+    path: /parks/{% random_park_nonexistent_id %}
+    response:
+      code: 404
+[...]
+```
+
+uses a random ID every time the test is run. This function needs to be defined in the supporting module, which is a
+Python file in the same directory and with the same name as the specification. The url of the request will be 
+given as a parameter. E.g.:
+
+```Python
+# inside park.py
+import random
+
+def random_park_nonexistent_id(url):
+    return random.randint(10, 20)
+```
+ 
+Request parameters
+------------------
+Parameters for requests are given in the `params` section:
+
+```YAML
+[...]
+  - name: The search endpoint uses a GET-parameter
+    path: /parks/search
+    method: GET
+    params:
+      t: sunny
+      per_page: 10
+[...]
+```
+
+Response validation
+-------------------
+The results from requests can be validated in several different ways under the `response` section:
+```YAML
+  - name: Get information about one specific park
+    path: /parks/1
+    response:
+      type: JSON
+      code: 200
+      contains: description
+      regex: .*description.*  # essentially the same as above, here as an example
+      function: validate_random_park
+```
+
+Here we make sure the server returns `Content-type: application/json` with code `200` and that the 
+returned body contains the text `description` (in two different ways). 
+
+Finally we run the validation function `validate_random_park` giving it the `url` and the `result object`  
+as parameters. We expect the validation function to return a value that evaluates to `True` or `False`.
+This function should be defined in the supporting module (see [dynamic paths](#dynamic-paths)).
 
 
 Todo
 ----
+- {% function %} for parameters
 - PUT-requests? (validation)
-- benchmarking code
+- benchmarking
 

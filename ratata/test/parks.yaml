@@ -18,7 +18,7 @@ requests:
       function: validate_random_park
 
   - name: Checking for 404
-    path: /parks/{% random_park_nonexistant_id %}
+    path: /parks/{% random_park_nonexistent_id %}
     response:
       code: 404
 
