@@ -32,7 +32,7 @@ def handle_request_spec(request_spec, spec):
     print(colorama.Fore.YELLOW + request_spec['name'] + colorama.Style.RESET_ALL)
     assert request_spec.get('path'), "Request %s is missing path attribute" % request_spec['name']
     url = "{0}{1}".format(spec['address'], request_spec['path'])
-    url = build_url(url, spec)
+    url = build_url(url, request_spec, spec)
     result = send_request(url, request_spec)
     return validate_request_result(result, url, request_spec, spec)
 

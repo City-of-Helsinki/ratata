@@ -9,18 +9,30 @@ PORT = 10231
 
 class HTTPTestServer(BaseHTTPRequestHandler):
 
-    def do_GET(self):
-        print("HTTPTestServer >> received request to %s" % self.path)
-        path = self.path
+    def __clean_a_bit(self, path):
         if path.endswith('/'):
             path = path[0:-1]
-        method_name = "GET{0}".format(path.replace('/', '_'))
+        path = path.split('?', 1)[0]
+        return path
+
+    def __execute_method(self, path, method_type='GET'):
+        method_name = "{0}{1}".format(method_type, path.replace('/', '_'))
         try:
             method = getattr(self, method_name)
             content = method()
             self.wfile.write(bytes(content, "utf8"))
         except AttributeError:
             self.GET_not_found()
+
+    def do_POST(self):
+        print("HTTPTestServer >> received POST to %s" % self.path)
+        path = self.__clean_a_bit(self.path)
+        self.__execute_method(path, 'POST')
+
+    def do_GET(self):
+        print("HTTPTestServer >> received GET to %s" % self.path)
+        path = self.__clean_a_bit(self.path)
+        self.__execute_method(path)
 
     def GET_test(self):
         self.send_response(200)

@@ -48,6 +48,11 @@ class ParksHTTPTestServer(HTTPTestServer):
     def GET_parks_100(self):
         return {'status': 'park %s not found' % '100'}
 
+    @respond_with(200)
+    @respond_json
+    def POST_parks(self):
+        return {'status': 'ok', 'id': 2}
+
 
 
 

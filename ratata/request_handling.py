@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 import colorama
 import re
 import requests
@@ -5,14 +7,15 @@ import requests
 
 def send_request(url, request):
     if request.get('method') and request['method'].lower() == 'post':
-        raise "foo"
+        print("  ==> post request", url)
+        ret = requests.post(url, data=request.get('params', {}))
     else:
         print("  ==> get request", url)
         ret = requests.get(url)
-        return ret
+    return ret
 
 
-def build_url(url, spec):
+def build_url(url, request_spec, spec):
     """
     Build the url by finding {% func_name %} patterns in the URL, calling the
     functions and replacing the patterns with the return values
@@ -31,4 +34,8 @@ def build_url(url, spec):
             else:
                 ret_val = func(url)
                 url = url.replace(func_wrapping, str(ret_val), 1)
+    if request_spec.get('params') and request_spec.get('method', 'get').lower() == 'get':
+        params = urlencode(tuple(request_spec['params'].items()))
+        url += '?' + params
+
     return url

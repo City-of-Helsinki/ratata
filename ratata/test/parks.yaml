@@ -30,3 +30,15 @@ requests:
     response:
       type: JSON
       contains: Porkie Park
+
+  - name: Create a new park
+    path: "/parks/"
+    method: POST
+    params:
+      name: Johnny Parkson
+      description: A Japanese-style stone garden featuring some late 19th century French shrubbery
+    response:
+      type: JSON
+      code: 200
+      contains: ok
+      contains: id

@@ -14,8 +14,6 @@ Features
 
 Todo
 ----
-- support for parameters in requests (also dynamic ones)
-- POST-requests
 - PUT-requests? (validation)
 - benchmarking code
 

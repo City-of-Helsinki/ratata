@@ -15,10 +15,10 @@ def validate_request_result(result, url, request_spec, spec):
             elif t.upper() == 'TEXT':
                 t = 'text/plain'
             ct = result.headers['content-type']
-            assert ct == t, "Content type {0} matches {1}".format(ct, t)
+            assert ct == t, "Required content type '{0}' matches given '{1}'".format(ct, t)
         if request_spec['response'].get('contains'):
             needle = request_spec['response']['contains']
-            assert result.text.find(needle) != -1, "Text {0} not found in response {1}".format(needle, result.text)
+            assert result.text.find(needle) != -1, "Required text '{0}' not found in response '{1}'".format(needle, result.text)
         if request_spec['response'].get('regex'):
             pattern = request_spec['response']['regex']
             assert re.match(pattern, result.text), "Regular expression {0} does not match response {1}". \
