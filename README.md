@@ -59,12 +59,27 @@ Parameters for requests are given in the `params` section:
 [...]
   - name: The search endpoint uses a GET-parameter
     path: /parks/search
-    method: GET
     params:
       t: sunny
       per_page: 10
 [...]
 ```
+
+Parameters can also be dynamic: 
+
+```YAML
+[...]
+  - name: Create a new park
+    path: /parks/
+    method: POST
+    params:
+      name: "{% a_random_park_name %}"
+[...]
+```
+This time `a_random_park_name(url)` function would be run from the supporting module (see [dynamic paths](#dynamic-paths))
+and its return value used as the value for `t`. Remember to enclose the name in quotation marks to avoid YAML parsing 
+errors.
+
 
 Response validation
 -------------------
@@ -90,7 +105,11 @@ This function should be defined in the supporting module (see [dynamic paths](#d
 
 Todo
 ----
-- {% function %} for parameters
-- PUT-requests? (validation)
+- notify failed results via slack 
+- same via email
 - benchmarking
+- PUT-requests? (validation)
 
+License
+-------
+MIT

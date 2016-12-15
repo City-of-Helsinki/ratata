@@ -35,7 +35,7 @@ requests:
     path: "/parks/"
     method: POST
     params:
-      name: Johnny Parkson
+      name: "{% random_park_name %}"
       description: A Japanese-style stone garden featuring some late 19th century French shrubbery
     response:
       type: JSON

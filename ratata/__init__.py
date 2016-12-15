@@ -64,7 +64,7 @@ def handle_request_spec(request_spec, spec):
     url = "{0}{1}".format(spec['address'], request_spec['path'])
     url = build_url(url, request_spec, spec)
     try:
-        result = send_request(url, request_spec)
+        result = send_request(url, request_spec, spec)
         return validate_request_result(result, url, request_spec, spec)
     except requests.exceptions.ConnectionError as e:
         print(colorama.Fore.RED + "  Connection to '{0}' was refused".format(url) + colorama.Style.RESET_ALL)

@@ -5,10 +5,13 @@ import re
 import requests
 
 
-def send_request(url, request):
+def send_request(url, request, spec):
     if request.get('method') and request['method'].lower() == 'post':
-        print("  POST:", url)
-        ret = requests.post(url, data=request.get('params', {}))
+        params = request.get('params', {})
+        for k, v in params.items():
+            params[k] = __handle_dynamic_parameters(v, url, spec['module'])
+        print("  POST:", url, request.get('params'))
+        ret = requests.post(url, data=params)
     else:
         print("  GET:", url)
         ret = requests.get(url)
@@ -35,7 +38,19 @@ def build_url(url, request_spec, spec):
                 ret_val = func(url)
                 url = url.replace(func_wrapping, str(ret_val), 1)
     if request_spec.get('params') and request_spec.get('method', 'get').lower() == 'get':
-        params = urlencode(tuple(request_spec['params'].items()))
+        params = request_spec['params']
+        for k, v in params.items():
+            params[k] = __handle_dynamic_parameters(v, url, spec['module'])
+        params = urlencode(tuple(params.items()))
         url += '?' + params
 
     return url
+
+
+def __handle_dynamic_parameters(v, url, module):
+    if v.startswith('{%'):
+        func_name = re.match(r'\{%\s*([\w_]+)\s*%\}', v).groups()[0]
+        func = getattr(module, func_name)
+        new_value = func(url)
+        return new_value
+    return v

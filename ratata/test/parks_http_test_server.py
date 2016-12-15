@@ -3,9 +3,6 @@ import json
 import requests
 from .http_test_server import HTTPTestServer, run, stop
 
-HOST = '127.0.0.1'
-PORT = 10231
-
 
 def respond_json(func):
     def rapper(obj):
