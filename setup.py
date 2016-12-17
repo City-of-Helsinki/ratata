@@ -5,6 +5,7 @@ install_requires = [
     'colorama',
     'PyYAML',
     'requests',
+    'slackclient',
 ]
 
 tests_require = [
@@ -26,7 +27,7 @@ setup(name='Ratata',
       setup_requires=['pytest-runner'],
       author='Lauri Kainulainen',
       author_email='lauri@montel.fi',
-      url='https://github.com/city-of-helsinki-org/ratata',
+      url='https://github.com/City-of-Helsinki/ratata',
       packages=['ratata'],
       classifiers=[
           'Development Status :: 3 - Alpha',

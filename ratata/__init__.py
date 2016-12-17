@@ -2,6 +2,7 @@ import os
 import importlib
 import sys
 
+import datetime
 import requests
 import yaml
 import colorama
@@ -30,17 +31,16 @@ def run_spec(definition_file, override_server=None, verbose=False):
         spec['address'] = override_server
     else:
         assert spec.get('address'), "Spec %s is missing address attribute" % spec['name']
-    passed = 0
-    failed = 0
+    results = {'passed': 0, 'failed': 0, 'time': datetime.datetime.now(), 'name': spec['name']}
     for request in spec['requests']:
         try:
             errors = handle_request_spec(request, spec)
             if not errors:
                 print(colorama.Fore.GREEN + "  " + "PASS!" + colorama.Style.RESET_ALL)
-                passed += 1
+                results['passed'] += 1
             else:
                 print(colorama.Fore.RED + "  " + "FAIL:" + colorama.Style.RESET_ALL)
-                failed += 1
+                results['failed'] += 1
                 for e in errors:
                     err = e.args[0] if type(e.args[0]) == str else e.args[0][0]
                     print("     - " + err)
@@ -49,12 +49,14 @@ def run_spec(definition_file, override_server=None, verbose=False):
         except AssertionError as e:
             print(colorama.Fore.RED + "  " + "FAIL:" + colorama.Style.RESET_ALL)
             print("    " + e.args[0])
-            failed += 1
+            results['failed'] += 1
         print()
-    print(colorama.Style.BRIGHT + "==== {0} requests passed, {1} failed ====".format(passed, failed) +
+    summary = "{0} requests passed, {1} failed".format(results['passed'], results['failed'])
+    print(colorama.Style.BRIGHT + "=====" + summary + "=====" +
           colorama.Style.RESET_ALL)
     print()
-    return spec
+    results['summary'] = summary
+    return results
 
 
 def handle_request_spec(request_spec, spec):

@@ -1,5 +1,21 @@
+appnope==0.1.0
 colorama==0.3.7
+decorator==4.0.10
+ipython==5.1.0
+ipython-genutils==0.1.0
+pexpect==4.2.1
+pickleshare==0.7.4
+prompt-toolkit==1.0.9
+ptyprocess==0.5.1
 py==1.4.31
+Pygments==2.1.3
 pytest==3.0.5
 PyYAML==3.12
+-e git+git@github.com:City-of-Helsinki/ratata.git@dd93785a1bbe2d9a9cae9617e1c146d31599cf8f#egg=Ratata
 requests==2.12.3
+simplegeneric==0.8.1
+six==1.10.0
+slackclient==1.0.4
+traitlets==4.3.1
+wcwidth==0.1.7
+websocket-client==0.40.0
