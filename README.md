@@ -15,7 +15,7 @@ address: http://127.0.0.1:10231
 requests:
   - name: Your basic index page
     path: "/parks/"
-    method: GET  # redundant, assumed
+    method: GET  # redundant as GET is default. Can also be PUT or POST
     response:
       type: JSON
       code: 200
@@ -103,10 +103,10 @@ as parameters. We expect the validation function to return a value that evaluate
 This function should be defined in the supporting module (see [dynamic paths](#dynamic-paths)).
 
 
-Define extra headers
---------------------
+Define extra headers or cookies
+-------------------------------
 
-Just use a `headers` dictionary inside the request specification:
+Just use `headers` or `cookies` inside the request specification:
 
 ```YAML
 [...]
@@ -116,6 +116,8 @@ Just use a `headers` dictionary inside the request specification:
     headers:
       "X-spiderman": "Is a big one"
       "Content-type": "application/json"
+    cookies:
+      flavor: "chocolate"
     params:
       name: "{% a_random_park_name %}"
 [...]
@@ -125,7 +127,6 @@ Todo
 ----
 - support giving cookie information for requests (for auth)
 - benchmarking
-- PUT-requests? (validation)
 
 License
 -------

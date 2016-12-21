@@ -37,6 +37,9 @@ requests:
     headers:
       "X-spiderman": "Is a big one"
       "Content-type": "application/json"
+    cookies:
+      flavor: chocolate
+      type: chocolate chip
     params:
       name: "{% random_park_name %}"
       description: A Japanese-style stone garden featuring some late 19th century French shrubbery

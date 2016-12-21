@@ -10,15 +10,19 @@ INITIAL_REQUEST_HEADERS = {'user-agent': 'ratata/0.2'}
 def send_request(url, request_spec, spec):
     headers = INITIAL_REQUEST_HEADERS.copy()
     headers.update(request_spec.get('headers', {}))
+    cookies = request_spec.get('cookies', {})
     if request_spec.get('method') and request_spec['method'].lower() == 'post':
         params = request_spec.get('params', {})
         for k, v in params.items():
             params[k] = __handle_dynamic_parameters(v, url, spec['module'])
         print("  POST:", url, request_spec.get('params'))
-        ret = requests.post(url, data=params, headers=headers)
+        ret = requests.post(url, data=params, headers=headers, cookies=cookies)
+    elif request_spec.get('method') and request_spec['method'].lower() == 'put':
+        print("  PUT:", url)
+        ret = requests.put(url, headers=headers, cookies=cookies)
     else:
         print("  GET:", url)
-        ret = requests.get(url, headers=headers)
+        ret = requests.get(url, headers=headers, cookies=cookies)
     return ret
 
 
