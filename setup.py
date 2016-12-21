@@ -19,7 +19,7 @@ def readme():
 
 
 setup(name='Ratata',
-      version='0.1',
+      version='0.2',
       description='Ratata is an API testing and validation tool',
       long_description=readme(),
       install_requires=install_requires,

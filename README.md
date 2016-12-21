@@ -103,10 +103,27 @@ as parameters. We expect the validation function to return a value that evaluate
 This function should be defined in the supporting module (see [dynamic paths](#dynamic-paths)).
 
 
+Define extra headers
+--------------------
+
+Just use a `headers` dictionary inside the request specification:
+
+```YAML
+[...]
+  - name: Create a new park
+    path: /parks/
+    method: POST
+    headers:
+      "X-spiderman": "Is a big one"
+      "Content-type": "application/json"
+    params:
+      name: "{% a_random_park_name %}"
+[...]
+```
+
 Todo
 ----
-- notify failed results via slack 
-- same via email
+- support giving cookie information for requests (for auth)
 - benchmarking
 - PUT-requests? (validation)
 

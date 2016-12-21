@@ -4,17 +4,21 @@ import colorama
 import re
 import requests
 
+INITIAL_REQUEST_HEADERS = {'user-agent': 'ratata/0.2'}
 
-def send_request(url, request, spec):
-    if request.get('method') and request['method'].lower() == 'post':
-        params = request.get('params', {})
+
+def send_request(url, request_spec, spec):
+    headers = INITIAL_REQUEST_HEADERS.copy()
+    headers.update(request_spec.get('headers', {}))
+    if request_spec.get('method') and request_spec['method'].lower() == 'post':
+        params = request_spec.get('params', {})
         for k, v in params.items():
             params[k] = __handle_dynamic_parameters(v, url, spec['module'])
-        print("  POST:", url, request.get('params'))
-        ret = requests.post(url, data=params)
+        print("  POST:", url, request_spec.get('params'))
+        ret = requests.post(url, data=params, headers=headers)
     else:
         print("  GET:", url)
-        ret = requests.get(url)
+        ret = requests.get(url, headers=headers)
     return ret
 
 

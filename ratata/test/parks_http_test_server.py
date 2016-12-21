@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json
 import requests
-from .http_test_server import HTTPTestServer, run, stop
+from .http_test_server import HTTPTestServer, run, stop, HOST, PORT
 
 
 def respond_json(func):
@@ -49,8 +49,6 @@ class ParksHTTPTestServer(HTTPTestServer):
     @respond_json
     def POST_parks(self):
         return {'status': 'ok', 'id': 2}
-
-
 
 
 # quick test

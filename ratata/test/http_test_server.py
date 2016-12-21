@@ -26,11 +26,13 @@ class HTTPTestServer(BaseHTTPRequestHandler):
 
     def do_POST(self):
         print("HTTPTestServer >> received POST to %s" % self.path)
+        print("       headers >> \n%s" % self.headers)
         path = self.__clean_a_bit(self.path)
         self.__execute_method(path, 'POST')
 
     def do_GET(self):
         print("HTTPTestServer >> received GET to %s" % self.path)
+        print("       headers >> \n%s" % self.headers)
         path = self.__clean_a_bit(self.path)
         self.__execute_method(path)
 
