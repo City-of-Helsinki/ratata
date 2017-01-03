@@ -1,6 +1,5 @@
 Ratata
 ======
-
 *Rest API Tuning And Testing Apparatus*
 
 Ratata is a HTTP API tester built with Python 3.
@@ -107,7 +106,6 @@ This function should be defined in the supporting module (see [dynamic paths](#d
 
 Define extra headers or cookies
 -------------------------------
-
 Just use `headers` or `cookies` inside the request specification:
 
 ```YAML
@@ -125,10 +123,19 @@ Just use `headers` or `cookies` inside the request specification:
 [...]
 ```
 
+
+Benchmarking
+------------
+Use an API-specification to drive performance tests with the `--benchmark` option
+```bash
+$ python ratata.py --benchmark 12 myspec.yaml
+```
+This would run every request specification inside `myspec.yaml` 12 times, check results and calculate the 
+average response times. All the requests are fired as soon as possible without any throttling.
+
+
 Todo
 ----
-- support giving cookie information for requests (for auth)
-- benchmarking
 
 License
 -------
