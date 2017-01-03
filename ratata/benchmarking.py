@@ -2,7 +2,7 @@ import random
 import datetime
 import grequests
 
-from ratata.curses_printing import curses_benchmarking_reporting, _curses_main, curses_benchmarking_summary
+from ratata.curses_printing import curses_benchmarking_reporting, curses_main, curses_benchmarking_summary
 from .printing import print_fail_with_exception, text_start, print_benchmarking_summary
 from .validation import validate_request_result
 from .testing import load_spec_and_env, handle_request_spec
@@ -12,7 +12,7 @@ def benchmark_spec(definition_file, multiply_by=1, override_server=None, verbose
     spec = load_spec_and_env(definition_file, override_server)
     if curses:
         import curses
-        return curses.wrapper(_curses_main, _do, spec, multiply_by, verbose, curses)
+        return curses.wrapper(curses_main, _do, spec, multiply_by, verbose, curses)
     else:
         print(text_start(definition_file, spec))
         return _do(spec, multiply_by, verbose, False)

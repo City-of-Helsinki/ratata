@@ -22,7 +22,20 @@ def print_summary(results):
 
 def print_benchmarking_summary(results):
     print()
-    summary = "{0} requests passed, {1} failed".format(results['passed'], results['failed'])
+    passed_amount = 0
+    failed_amount = 0
+    times = []
+    for name, values in results['requests'].items():
+        passed_amount += len(values['passed'])
+        failed_amount += len(values['failed'])
+        times += map(lambda x: x[1].microseconds / 1000, values['passed'])
+        times += map(lambda x: x[1].microseconds / 1000, values['failed'])
+        print(colorama.Fore.YELLOW + "  " + name + colorama.Style.RESET_ALL)
+        print("  passed: {}, failed {}".format(passed_amount, failed_amount))
+
+    avg_time = sum(times) / len(times)
+    summary = "{} requests passed, {} failed, average time {:.2f}ms".format(passed_amount, failed_amount, avg_time)
+    print()
     print(colorama.Style.BRIGHT + "=====" + summary + "=====" + colorama.Style.RESET_ALL)
     print()
 
@@ -33,10 +46,6 @@ def print_request_start(request_spec):
 
 def request_start_text(request_spec):
     return colorama.Fore.YELLOW + "  " + request_spec['name'] + colorama.Style.RESET_ALL
-
-
-def request_text(request_spec, results):
-    return request_start_text(request_spec) + 'S' * len(results['passed']) + 'F' * len(results['failed'])
 
 
 def print_request_end(request_spec):

@@ -21,6 +21,8 @@ def get_args():
 
     parser.add_argument("--benchmark", help="Drive all request in the spec file times N in parallel and count durations",
                         type=int)
+    parser.add_argument("--no-curses", help="Don't use the curses-based UI with benchmarking, just print results",
+                        action="store_true")
     return parser.parse_args()
 
 
@@ -47,7 +49,7 @@ if __name__ == '__main__':
     args = get_args()
     validate_args(args)
     if args.benchmark:
-        results = benchmark_spec(args.spec_file, args.benchmark, args.address, args.verbose)
+        results = benchmark_spec(args.spec_file, args.benchmark, args.address, args.verbose, not args.no_curses)
     else:
         results = run_spec(args.spec_file, args.address, args.verbose)
 

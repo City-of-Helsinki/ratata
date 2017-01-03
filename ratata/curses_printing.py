@@ -1,7 +1,7 @@
 import curses
 
 
-def _curses_main(stdscr, func, spec, *args, **kwargs):
+def curses_main(stdscr, func, spec, *args, **kwargs):
     stdscr.clear()
     curses.cbreak()
     curses.noecho()
