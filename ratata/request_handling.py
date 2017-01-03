@@ -2,28 +2,31 @@ from urllib.parse import urlencode
 
 import colorama
 import re
-import requests
+import grequests
 
 INITIAL_REQUEST_HEADERS = {'user-agent': 'ratata/0.2'}
 
 
-def send_request(url, request_spec, spec):
+def build_request(url, request_spec, spec):
     headers = INITIAL_REQUEST_HEADERS.copy()
     headers.update(request_spec.get('headers', {}))
+    headers['X-ratata-id'] = request_spec['name']
     cookies = request_spec.get('cookies', {})
     if request_spec.get('method') and request_spec['method'].lower() == 'post':
         params = request_spec.get('params', {})
         for k, v in params.items():
             params[k] = __handle_dynamic_parameters(v, url, spec['module'])
-        print("  POST:", url, request_spec.get('params'))
-        ret = requests.post(url, data=params, headers=headers, cookies=cookies)
+        # print("  POST:", url, request_spec.get('params'))
+        ret = grequests.post(url, data=params, headers=headers, cookies=cookies)
     elif request_spec.get('method') and request_spec['method'].lower() == 'put':
-        print("  PUT:", url)
-        ret = requests.put(url, headers=headers, cookies=cookies)
+        # print("  PUT:", url)
+        ret = grequests.put(url, headers=headers, cookies=cookies)
     else:
-        print("  GET:", url)
-        ret = requests.get(url, headers=headers, cookies=cookies)
+        # print("  GET:", url)
+        ret = grequests.get(url, headers=headers, cookies=cookies)
     return ret
+    # rs = (grequests.get(u) for u in urls)
+    # grequests.map(rs)
 
 
 def build_url(url, request_spec, spec):

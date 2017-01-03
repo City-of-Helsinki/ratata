@@ -6,6 +6,7 @@ install_requires = [
     'PyYAML',
     'requests',
     'slackclient',
+    'grequests',
 ]
 
 tests_require = [

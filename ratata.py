@@ -2,7 +2,7 @@
 import sys
 import argparse
 
-from ratata import run_spec
+from ratata import run_spec, benchmark_spec
 from ratata.integrations import send_slack_message, send_email_message
 
 
@@ -18,6 +18,9 @@ def get_args():
     parser.add_argument("--email-to", help="send the final results to this email (requires the smtp argument)")
     parser.add_argument("--email-smtp", help="the smtp server to use for email sending")
     parser.add_argument("--email-smtp-login", help="username and password for the smtp server in the form USER:PASS")
+
+    parser.add_argument("--benchmark", help="Drive all request in the spec file times N in parallel and count durations",
+                        type=int)
     return parser.parse_args()
 
 
@@ -43,7 +46,11 @@ def send_messages(args, results):
 if __name__ == '__main__':
     args = get_args()
     validate_args(args)
-    results = run_spec(args.spec_file, args.address, args.verbose)
+    if args.benchmark:
+        results = benchmark_spec(args.spec_file, args.benchmark, args.address, args.verbose)
+    else:
+        results = run_spec(args.spec_file, args.address, args.verbose)
+
     if args.only_fail:
         if results['failed'] > 0:
             send_messages(args, results)

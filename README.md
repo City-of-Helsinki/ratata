@@ -1,6 +1,8 @@
 Ratata
 ======
 
+*Rest API Tuning And Testing Apparatus*
+
 Ratata is a HTTP API tester built with Python 3.
 
 Features
