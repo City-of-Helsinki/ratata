@@ -51,7 +51,7 @@ def load_spec_and_env(definition_file, override_server):
         spec['module'] = get_support_module(module_path)
     else:
         possible_module_name = definition_file.rsplit('.', 1)[0]
-        if os.path.exists(possible_module_name):
+        if os.path.exists(possible_module_name + '.py'):
             spec['module'] = get_support_module(possible_module_name)
     assert spec.get('name'), "Spec %s is missing name" % spec
     if override_server:
