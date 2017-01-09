@@ -59,7 +59,7 @@ def build_url(url, request_spec, spec):
 
 
 def __handle_dynamic_parameters(v, url, module):
-    if v.startswith('{%'):
+    if type(v) == str and v.startswith('{%'):
         func_name = re.match(r'\{%\s*([\w_]+)\s*%\}', v).groups()[0]
         func = getattr(module, func_name)
         new_value = func(url)

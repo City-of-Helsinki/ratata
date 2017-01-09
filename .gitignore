@@ -93,3 +93,4 @@ ENV/
 /pip-selfcheck.json
 .DS_Store
 /ratata_venv
+/hkr/
