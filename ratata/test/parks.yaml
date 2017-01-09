@@ -48,3 +48,10 @@ requests:
       code: 200
       contains: ok
       contains: id
+
+  - name: Delete the previous park
+    path: "/parks/{% created_park_id %}"
+    method: DELETE
+    response:
+      code: 200
+      contains: ok

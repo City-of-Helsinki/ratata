@@ -53,7 +53,7 @@ def print_request_end(request_spec):
 
 
 def print_success(result):
-    print(colorama.Fore.GREEN + "  " + "PASS (%.2fms)" % (result.elapsed.microseconds / 1000.0) +
+    print(colorama.Fore.GREEN + "  " + "PASS {} ({:.2f}ms)".format(result.status_code, result.elapsed.microseconds / 1000.0) +
           colorama.Style.RESET_ALL)
 
 

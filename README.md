@@ -16,7 +16,7 @@ address: http://127.0.0.1:10231
 requests:
   - name: Your basic index page
     path: "/parks/"
-    method: GET  # redundant as GET is default. Can also be PUT or POST
+    method: GET  # redundant as GET is default. Can also be PUT or POST or DELETE
     response:
       type: JSON
       code: 200
@@ -58,7 +58,7 @@ name: My fancy API
 address: http://foo.com
 module: my_other_module
 ```
- 
+
 Request parameters
 ------------------
 Parameters for requests are given in the `params` section:
@@ -88,6 +88,17 @@ This time `a_random_park_name(url)` function would be run from the supporting mo
 and its return value used as the value for `t`. Remember to enclose the name in quotation marks to avoid YAML parsing 
 errors.
 
+If you'd like the parameters to be sent as JSON in the request body then use the `format: JSON` definition.
+```YAML
+[...]
+  - name: Create a new park
+    path: /parks/
+    method: POST
+    format: JSON
+    params:
+      name: "{% a_random_park_name %}"
+[...]
+```
 
 Response validation
 -------------------
@@ -106,10 +117,15 @@ The results from requests can be validated in several different ways under the `
 Here we make sure the server returns `Content-type: application/json` with code `200` and that the 
 returned body contains the text `description` (in two different ways). 
 
-Finally we run the validation function `validate_random_park` giving it the `url` and the `result object`  
-as parameters. We expect the validation function to return a value that evaluates to `True` or `False`.
-This function should be defined in the supporting module (see [dynamic paths](#dynamic-paths)).
+Finally we run the validation function `validate_random_park` giving it the `url` and `result object` as parameters. 
+The function should either return `False` or raise `AssertionError` if there is something wrong.
+This function should be defined in the supporting module (see [dynamic paths](#dynamic-paths)). Here's an example 
+validation function: 
 
+```Python
+def validate_random_park(url, response):
+    return response.text.find("Porkie Park") != -1  # response is a Requests Response object
+```
 
 Define extra headers or cookies
 -------------------------------
@@ -132,7 +148,6 @@ Just use `headers` or `cookies` inside the request specification:
 
 You can also use both on the top-level in which case they'll be applied to every request.
 
-
 Benchmarking
 ------------
 Use an API-specification to drive performance tests with the `--benchmark` option
@@ -144,9 +159,22 @@ average response times. All the requests are fired as soon as possible without a
 
 Only GET-requests will be benchmarked.
 
+Using previous test results
+---------------------------
+All the test cases are run synchronously and it's possible to use the results of previous cases as input for 
+new ones. This in general is bad practise as it makes your tests interdependent and will not work in 
+benchmarking where test order is randomized and tests are run asynchronously. However it's sometimes very 
+handy, e.g. when creating a resource and later wanting to delete it. Access to previous results happens
+through an injected global `RATATA_RESULTS`. Use your request specification `name` as key:
 
-Todo
-----
+```Python
+def previous_park_id(url):
+    rs = globals()['RATATA_RESULTS']
+    if 'Create a new park' in rs:
+        res = rs['Create a new park']
+        return res.json()['id']
+```
+
 
 License
 -------

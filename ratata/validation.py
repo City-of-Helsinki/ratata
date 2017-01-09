@@ -42,5 +42,6 @@ def validate_row(key, val, result, url, spec):
     if key == 'function':
         func_name = val
         func = getattr(spec['module'], func_name)
-        assert func(url, result) != False, ("Function {0} says response is not valid".format(func_name), result.text)
+        assert func(url, result) is not False, \
+            ("Function {0} says response is not valid".format(func_name), result.text)
 

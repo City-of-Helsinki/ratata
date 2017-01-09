@@ -12,3 +12,8 @@ def random_park_name(url):
 def validate_random_park(url, response):
     return response.text.find("Porkie Park") != -1
 
+
+def created_park_id(url):
+    rs = globals()['RATATA_RESULTS']
+    res = rs['Create a new park']
+    return res.json()['id']

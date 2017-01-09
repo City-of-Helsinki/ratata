@@ -47,6 +47,11 @@ class ParksHTTPTestServer(HTTPTestServer):
 
     @respond_with(200)
     @respond_json
+    def DELETE_parks_2(self):
+        return {'id': 1, 'status': 'ok'}
+
+    @respond_with(200)
+    @respond_json
     def POST_parks(self):
         return {'status': 'ok', 'id': 2}
 
