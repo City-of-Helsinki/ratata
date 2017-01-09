@@ -17,6 +17,7 @@ def validate_request_result(result, url, request_spec, spec):
 
 
 def validate_row(key, val, result, url, spec):
+    assert result, "No result available. Is the network down?"
     if key == 'code':
         assert result.status_code == int(val), \
             "Required status code {0} does not match returned {1}".format(val, result.status_code)

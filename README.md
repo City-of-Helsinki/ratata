@@ -51,6 +51,13 @@ import random
 def random_park_nonexistent_id(url):
     return random.randint(10, 20)
 ```
+
+You can also define a top-level `module` attribute to import your supporting code from another location:
+```YAML
+name: My fancy API
+address: http://foo.com
+module: my_other_module
+```
  
 Request parameters
 ------------------

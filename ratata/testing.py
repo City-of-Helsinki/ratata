@@ -44,7 +44,15 @@ def load_spec_and_env(definition_file, override_server):
         definition_file = os.path.join(os.getcwd(), definition_file)
     with open(definition_file) as f:
         spec = yaml.load(f.read())
-    spec['module'] = find_possible_support_module(definition_file)
+    if 'module' in spec:
+        module_path = spec['module']
+        if not module_path.startswith('/'):
+            module_path = os.path.join(os.path.dirname(definition_file), module_path)
+        spec['module'] = get_support_module(module_path)
+    else:
+        possible_module_name = definition_file.rsplit('.', 1)[0]
+        if os.path.exists(possible_module_name):
+            spec['module'] = get_support_module(possible_module_name)
     assert spec.get('name'), "Spec %s is missing name" % spec
     if override_server:
         spec['address'] = override_server
@@ -53,16 +61,15 @@ def load_spec_and_env(definition_file, override_server):
     return spec
 
 
-def find_possible_support_module(definition_file):
-    possible_module_name = definition_file.rsplit('.', 1)[0]
+def get_support_module(module_name):
     # need to append to sys.path first because relative imports would require
     # an anchor package, which is not available
-    sys.path.append(os.path.dirname(possible_module_name))
+    sys.path.append(os.path.dirname(module_name))
     try:
-        module = importlib.import_module(os.path.basename(possible_module_name))
+        module = importlib.import_module(os.path.basename(module_name))
         return module
     except ImportError as e:
-        print("Could not import the module ", possible_module_name, e)
+        print(colorama.Fore.RED + "Could not import the module: " + module_name + colorama.Style.RESET_ALL)
     return None
 
 
