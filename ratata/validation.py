@@ -17,9 +17,8 @@ def validate_request_result(result, url, request_spec, spec):
 
 
 def validate_row(key, val, result, url, spec):
-    assert result, "No result available. Is the network down?"
     if key == 'code':
-        assert result.status_code == int(val), \
+        assert result and result.status_code == int(val), \
             "Required status code {0} does not match returned {1}".format(val, result.status_code)
     if key == 'type':
         t = val
@@ -29,11 +28,11 @@ def validate_row(key, val, result, url, spec):
             t = 'text/html'
         elif t.upper() == 'TEXT':
             t = 'text/plain'
-        ct = result.headers['content-type']
+        ct = result and result.headers['content-type']
         assert ct == t, "Required content type '{0}' does not match returned '{1}'".format(ct, t)
     if key == 'contains':
         needle = val
-        assert result.text.find(needle) != -1, \
+        assert result and result.text.find(needle) != -1, \
             ("Required text '{0}' not found in response".format(needle), result.text)
     if key == 'regex':
         pattern = val
