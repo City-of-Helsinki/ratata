@@ -23,6 +23,9 @@ def _do(spec, multiply_by=1, verbose=False, curses=True, stdscr=None):
     reqs = []
 
     for request_spec in spec['requests']:
+        if request_spec.get('method', 'GET') != 'GET':
+            print("Ignoring {} for benchmarking as it is not GET".format(request_spec['name']))
+            continue
         if request_spec['name'] not in results['requests']:
             results['requests'][request_spec['name']] = {'passed': [], 'failed': []}
         try:

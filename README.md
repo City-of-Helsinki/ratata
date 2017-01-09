@@ -142,6 +142,8 @@ $ python ratata.py --benchmark 12 myspec.yaml
 This would run every request specification inside `myspec.yaml` 12 times, check results and calculate the 
 average response times. All the requests are fired as soon as possible without any throttling.
 
+Only GET-requests will be benchmarked.
+
 
 Todo
 ----
