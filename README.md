@@ -123,6 +123,8 @@ Just use `headers` or `cookies` inside the request specification:
 [...]
 ```
 
+You can also use both on the top-level in which case they'll be applied to every request.
+
 
 Benchmarking
 ------------

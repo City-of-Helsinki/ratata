@@ -9,9 +9,11 @@ INITIAL_REQUEST_HEADERS = {'user-agent': 'ratata/0.2'}
 
 def build_request(url, request_spec, spec):
     headers = INITIAL_REQUEST_HEADERS.copy()
+    headers.update(spec.get('headers', {}))
     headers.update(request_spec.get('headers', {}))
     headers['X-ratata-id'] = request_spec['name']
-    cookies = request_spec.get('cookies', {})
+    cookies = spec.get('cookies', {})
+    cookies.update(request_spec.get('cookies', {}))
     if request_spec.get('method') and request_spec['method'].lower() == 'post':
         params = request_spec.get('params', {})
         for k, v in params.items():
