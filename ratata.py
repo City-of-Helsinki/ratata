@@ -2,6 +2,12 @@
 import sys
 import argparse
 
+# This is required for issue combining py3.6 & gevent & SSL
+# see e.g. https://github.com/kennethreitz/grequests/issues/116
+# note: won't work even with this
+# from gevent.monkey import patch_select
+# patch_select(aggressive=True)
+
 from ratata import run_spec, benchmark_spec
 from ratata.integrations import send_slack_message, send_email_message
 

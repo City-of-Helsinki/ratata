@@ -28,15 +28,26 @@ def print_benchmarking_summary(results):
     for name, values in results['requests'].items():
         passed_amount += len(values['passed'])
         failed_amount += len(values['failed'])
-        times += map(lambda x: x[1].microseconds / 1000, values['passed'])
-        times += map(lambda x: x[1].microseconds / 1000, values['failed'])
+        passed_req_times = list(map(lambda x: x[1].microseconds / 1000, values['passed']))
+        failed_req_times = list(map(lambda x: x[1].microseconds / 1000, values['failed']))
+        times += passed_req_times
+        times += failed_req_times
+        if passed_req_times:
+            passed_avg_time = sum(passed_req_times) / len(passed_req_times)
+        else:
+            passed_avg_time = 0
+        if failed_req_times:
+            failed_avg_time = sum(failed_req_times) / len(failed_req_times)
+        else:
+            failed_avg_time = 0
         print(colorama.Fore.YELLOW + "  " + name + colorama.Style.RESET_ALL)
-        print("  passed: {}, failed {}".format(passed_amount, failed_amount))
+        print("  passed: {} (avg. {:.2f}ms), failed {} (avg. {:.2f}ms)".format(len(values['passed']), passed_avg_time,
+                                                                               len(values['failed']), failed_avg_time))
 
     avg_time = sum(times) / len(times)
     summary = "{} requests passed, {} failed, average time {:.2f}ms".format(passed_amount, failed_amount, avg_time)
     print()
-    print(colorama.Style.BRIGHT + "=====" + summary + "=====" + colorama.Style.RESET_ALL)
+    print(colorama.Style.BRIGHT + "===== " + summary + " =====" + colorama.Style.RESET_ALL)
     print()
 
 

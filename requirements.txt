@@ -1,7 +1,7 @@
 appnope==0.1.0
 colorama==0.3.7
 decorator==4.0.10
-gevent==1.1.2
+gevent==1.2.2
 greenlet==0.4.11
 grequests==0.3.0
 ipython==5.1.0
@@ -15,7 +15,7 @@ Pygments==2.1.3
 pytest==3.0.5
 PyYAML==3.12
 -e git+git@github.com:City-of-Helsinki/ratata.git@acdf4a3b652d99a867d9314a362b4325c91e7b80#egg=Ratata
-requests==2.12.3
+requests==2.18.4
 simplegeneric==0.8.1
 six==1.10.0
 slackclient==1.0.4

@@ -4,6 +4,15 @@ Ratata
 
 Ratata is a HTTP API tester built with Python 3.
 
+*Note that due to issues with the combination of Python3.6, gevent and SSL, you should
+  use Python 3.4 for now*
+
+Some issues related to this:
+- https://github.com/kennethreitz/grequests/issues/114
+- https://github.com/kennethreitz/grequests/issues/116
+- https://github.com/shazow/urllib3/issues/681
+- https://github.com/gevent/gevent/issues/835
+
 Features
 --------
 Ratata parses an API-test specification from a YAML-file and runs the tests against a live server.

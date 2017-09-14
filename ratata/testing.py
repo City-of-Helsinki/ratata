@@ -4,6 +4,7 @@ import sys
 
 import datetime
 import requests
+
 import grequests
 import yaml
 import colorama
@@ -19,6 +20,7 @@ def run_spec(definition_file, override_server=None, verbose=False):
     spec = load_spec_and_env(definition_file, override_server)
     print_start(definition_file, spec)
     results = {'passed': [], 'failed': [], 'time': datetime.datetime.now(), 'name': spec['name'], 'return_values': {}}
+
     for request_spec in spec['requests']:
         try:
             request, url = handle_request_spec(request_spec, spec, results)

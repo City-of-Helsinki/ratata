@@ -9,7 +9,7 @@ def curses_main(stdscr, func, spec, *args, **kwargs):
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
     stdscr.addstr(0, 0, spec['name'], curses.A_STANDOUT)
-    func(spec, *args, **kwargs, stdscr=stdscr)
+    func(spec, stdscr=stdscr, *args, **kwargs)
     stdscr.getkey()
 
 
